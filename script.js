@@ -1,18 +1,19 @@
-function fetchNews(query) {
-  const apiKey = "9c578be479284278babb4d46c0a5acf9";
-  const apiUrl = `https://newsapi.org/v2/everything?q=${query}&apiKey=${apiKey}`;
+async function fetchNews(query) {
+  try {
+    const apiKey = "9c578be479284278babb4d46c0a5acf9";
+    const apiUrl = `https://newsapi.org/v2/everything?q=${query}&apiKey=${apiKey}`;
 
-  fetch(apiUrl)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Failed to fetch news");
-      }
-      return response.json();
-    })
-    .then((data) => {
-      displayNews(data.articles);
-    })
-    .catch((error) => console.error("Error fetching news:", error));
+    const response = await fetch(apiUrl);
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch news");
+    }
+
+    const data = await response.json();
+    displayNews(data.articles);
+  } catch (error) {
+    console.error("Error fetching news:", error);
+  }
 }
 
 function displayNews(articles) {
