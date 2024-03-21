@@ -3,7 +3,12 @@ function fetchNews(query) {
   const apiUrl = `https://newsapi.org/v2/everything?q=${query}&apiKey=${apiKey}`;
 
   fetch(apiUrl)
-    .then((response) => response.json())
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to fetch news");
+      }
+      return response.json();
+    })
     .then((data) => {
       displayNews(data.articles);
     })
@@ -39,3 +44,10 @@ document
       fetchNews(query);
     }
   });
+
+function fetchDefaultNews() {
+  const defaultQuery = "berita";
+  fetchNews(defaultQuery);
+}
+
+window.onload = fetchDefaultNews;
